@@ -11,21 +11,61 @@ namespace TradingAPI.Services
     {
         public ComparisonResponse CalculateComparison(string apiResponse)
         {
+            ComparisonResponse rsp = new ComparisonResponse();
             var marketDataResponse = JsonConvert.DeserializeObject<MarketDataResponse>(apiResponse);
             var tradetimestamps = marketDataResponse.Chart.Result[0].Timestamp;
             var tradeOpenValues = marketDataResponse.Chart.Result[0].Indicators.Quote[0].Open;
+            var comparisonTradeOpenValues = marketDataResponse.Chart.Result[0].Comparisons[0].Open;
+
+            rsp.ComparisonItems.Add(new ComparisonItem
+            {
+                TimeStamp = tradetimestamps[0],
+                 Date = UnixTimeStampToDateTime(tradetimestamps[0]),
+                 Source = new Container
+                 {
+                     Symbol = marketDataResponse.Chart.Result[0].Meta.Symbol,
+                    Performance = CompareResult(tradeOpenValues[0], comparisonTradeOpenValues[0]),
+                 },
+                 Opposite = new Container
+                 {
+                      Symbol = marketDataResponse.Chart.Result[0].Comparisons[0].symbol,
+                       Performance = CompareResult(comparisonTradeOpenValues[0], comparisonTradeOpenValues[0])
+                 }
+            });
 
             for(int i = 1;i < tradeOpenValues.Count;i++)
             {
-                CompareResult(tradeOpenValues[0], tradeOpenValues[i]);
+                rsp.ComparisonItems.Add(new ComparisonItem
+                {
+                    TimeStamp = tradetimestamps[1],
+                    Date = UnixTimeStampToDateTime(tradetimestamps[0]),
+                    Source = new Container
+                    {
+                        Symbol = marketDataResponse.Chart.Result[0].Meta.Symbol,
+                        Performance = CompareResult(tradeOpenValues[0], tradeOpenValues[i])
+                    },
+                    Opposite = new Container
+                    {
+                        Symbol = marketDataResponse.Chart.Result[0].Comparisons[0].symbol,
+                        Performance = CompareResult(comparisonTradeOpenValues[0], comparisonTradeOpenValues[i])
+                    }
+                });
             }
-            var comparisonTradeOpenValues = marketDataResponse.Chart.Result[0].Comparisons[0].Open;
-            return new ComparisonResponse();
+
+            return rsp;
         }
 
-        private decimal CompareResult(decimal initial, decimal secondary)
+        private string CompareResult(decimal initial, decimal secondary)
         {
-            return (secondary / initial) * 100;
+            return (secondary / initial).ToString("P");
+        }
+
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dateTime;
         }
     }
 }

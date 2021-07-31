@@ -7,5 +7,10 @@ namespace TradingAPI.Models
 {
     public class ComparisonResponse
     {
+        public List<ComparisonItem> ComparisonItems { get; set; }
+        public ComparisonResponse()
+        {
+            ComparisonItems = new List<ComparisonItem>();
+        }
     }
 }
