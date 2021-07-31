@@ -7,10 +7,10 @@ namespace TradingAPI.Models
 {
     public class Quote
     {
-        public List<double> Close { get; set; }
-        public List<double> Open { get; set; }
-        public List<double> High { get; set; }
-        public List<double> Low { get; set; }
+        public List<decimal> Close { get; set; }
+        public List<decimal> Open { get; set; }
+        public List<decimal> High { get; set; }
+        public List<decimal> Low { get; set; }
         public List<int> Volume { get; set; }
     }
 }

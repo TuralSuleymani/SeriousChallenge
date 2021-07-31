@@ -8,10 +8,10 @@ namespace TradingAPI.Models
     public class Comparison
     {
         public string symbol { get; set; }
-        public List<double> High { get; set; }
-        public List<double> Low { get; set; }
-        public double ChartPreviousClose { get; set; }
-        public List<double> Close { get; set; }
-        public List<double> Open { get; set; }
+        public List<decimal> High { get; set; }
+        public List<decimal> Low { get; set; }
+        public decimal ChartPreviousClose { get; set; }
+        public List<decimal> Close { get; set; }
+        public List<decimal> Open { get; set; }
     }
 }

@@ -16,8 +16,8 @@ namespace TradingAPI.Models
         public int Gmtoffset { get; set; }
         public string Timezone { get; set; }
         public string ExchangeTimezoneName { get; set; }
-        public double RegularMarketPrice { get; set; }
-        public double ChartPreviousClose { get; set; }
+        public decimal RegularMarketPrice { get; set; }
+        public decimal ChartPreviousClose { get; set; }
         public int PriceHint { get; set; }
         public CurrentTradingPeriod CurrentTradingPeriod { get; set; }
         public string DataGranularity { get; set; }
