@@ -20,7 +20,7 @@ namespace TradingAPI.Services
         public ComparisonResponse CalculateComparison(string symbol, string comparison)
         {
             string apiResponse =  _financeService.GetResponseString(symbol, comparison);
-            ComparisonResponse rsp = new ComparisonResponse();
+            var rsp = new ComparisonResponse();
             var marketDataResponse = JsonConvert.DeserializeObject<MarketDataResponse>(apiResponse);
             var tradetimestamps = marketDataResponse.Chart.Result[0].Timestamp;
             var tradeOpenValues = marketDataResponse.Chart.Result[0].Indicators.Quote[0].Open;
