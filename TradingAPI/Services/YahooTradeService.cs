@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using RestSharp;
 using TradingAPI.Models;
 
 namespace TradingAPI.Services
 {
     public class YahooTradeService : ITradeService
     {
-        public ComparisonResponse CalculateComparison(string apiResponse)
+        private readonly YahooFinanceService _financeService;
+        public YahooTradeService(YahooFinanceService financeService)
         {
+            _financeService = financeService;
+        }
+        public ComparisonResponse CalculateComparison(string symbol, string comparison)
+        {
+            string apiResponse =  _financeService.GetResponseString(symbol, comparison);
             ComparisonResponse rsp = new ComparisonResponse();
             var marketDataResponse = JsonConvert.DeserializeObject<MarketDataResponse>(apiResponse);
             var tradetimestamps = marketDataResponse.Chart.Result[0].Timestamp;
@@ -24,7 +33,7 @@ namespace TradingAPI.Services
                  Source = new Container
                  {
                      Symbol = marketDataResponse.Chart.Result[0].Meta.Symbol,
-                    Performance = CompareResult(tradeOpenValues[0], comparisonTradeOpenValues[0]),
+                    Performance = CompareResult(tradeOpenValues[0], tradeOpenValues[0]),
                  },
                  Opposite = new Container
                  {

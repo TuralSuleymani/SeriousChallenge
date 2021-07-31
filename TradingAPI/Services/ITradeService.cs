@@ -4,6 +4,6 @@ namespace TradingAPI.Services
 {
     public interface ITradeService
     {
-        ComparisonResponse CalculateComparison(string apiResponse);
+        ComparisonResponse CalculateComparison(string symbol, string comparison);
     }
 }

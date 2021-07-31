@@ -26,7 +26,8 @@ namespace TradingAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<TradeConfig>(options => Configuration.GetSection("Config").Bind(options));
+            services.AddTransient<YahooFinanceService>();
+            services.Configure<YahooConfig>(options => Configuration.GetSection("YahooConfig").Bind(options));
             services.AddTransient<ITradeService, YahooTradeService>();
             services.AddControllers();
         }

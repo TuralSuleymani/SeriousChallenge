@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TradingAPI.Models
 {
-    public class TradeConfig
+    public class YahooConfig
     {
         public string Url { get; set; }
         public string Rapidapikey { get; set; }
